@@ -33,7 +33,7 @@ void main(){
     char* bmpfile_new="new_32bpp.bmp";
     read_header(bmpfile, &header);
     read_winbitmap(bmpfile, &winbitmap);
-    read_pixel_win(0,0,bmpfile,header,winbitmap, &pixel);
+    read_pixel_win(1,0,bmpfile,header,winbitmap, &pixel);
 
     printf("pixel.r = %d \n",pixel.r);
     printf("pixel.g = %d \n",pixel.g);
@@ -42,9 +42,9 @@ void main(){
     header_init_4k(&header_4k,&winbitmap_4k);
     for (int i =0; i<3840;i++){
         for(int j=0; j<2160;j++){
-            pixel_new->r = (unsigned char)(i+j);
-            pixel_new->g = (unsigned char)(i+j);
-            pixel_new->b = (unsigned char)(i+j);
+            pixel_new->rgb.r = (unsigned char)(i+j);
+            pixel_new->rgb.g = (unsigned char)(i+j);
+            pixel_new->rgb.b = (unsigned char)(i+j);
             pixel_new->alpha = (unsigned char)0;
             pixel_new++;
         }

@@ -35,9 +35,7 @@ typedef struct {
 } RGB;
 
 typedef struct {
-    unsigned char r;
-    unsigned char g;
-    unsigned char b;
+    RGB rgb;
     unsigned char alpha;
 } RGBa;
 #pragma pack(pop)
@@ -50,9 +48,23 @@ void read_pixel_win(int x, int y, char * filename, HEADER fileheader, WINBITMAP 
         printf("Error0! File not found!\n");
     }
     //move file pointer to the beginning of bitmap data
-    fseek(filePtr, fileheader.offset + (x + y * winbitpmap.width), SEEK_SET);
+    fseek(filePtr, fileheader.offset + (x + y * winbitpmap.width)*4, SEEK_SET);
     //read the bitmap file header
     fread(rgb, 3,1,filePtr);
+    fclose(filePtr);
+}
+
+void read_pixela_win(int x, int y, char * filename, HEADER fileheader, WINBITMAP winbitpmap, RGBa * rgba){
+    FILE *filePtr;  //our file pointer
+    //open file in read binary mode
+    filePtr = fopen(filename,"rb");
+    if (filePtr == NULL){
+        printf("Error0! File not found!\n");
+    }
+    //move file pointer to the beginning of bitmap data
+    fseek(filePtr, fileheader.offset + (x + y * winbitpmap.width)*4, SEEK_SET);
+    //read the bitmap file header
+    fread(rgba, 4,1,filePtr);
     fclose(filePtr);
 }
 
