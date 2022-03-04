@@ -33,6 +33,13 @@ typedef struct {
     unsigned char g;
     unsigned char b;
 } RGB;
+
+typedef struct {
+    unsigned char r;
+    unsigned char g;
+    unsigned char b;
+    unsigned char alpha;
+} RGBa;
 #pragma pack(pop)
 
 void read_pixel_win(int x, int y, char * filename, HEADER fileheader, WINBITMAP winbitpmap, RGB * rgb){
@@ -88,5 +95,14 @@ void read_winbitmap(char * filename, WINBITMAP* winbitmap){
     //read the bitmap file header
     fseek(filePtr, 14, SEEK_SET);
     fread(winbitmap, 40,1,filePtr);
+    fclose(filePtr);
+}
+void write_bmp_file(char * filename, HEADER * headerptr, WINBITMAP* winbitmap, RGBa* pixel_ptr){
+    FILE *filePtr;  //our file pointer
+    //open file in read binary mode
+    filePtr = fopen(filename,"w+");
+    fwrite(headerptr, sizeof(HEADER), 1, filePtr);
+    fwrite(winbitmap, sizeof(WINBITMAP), 1, filePtr);
+    fwrite(pixel_ptr, winbitmap->imagesize, 1, filePtr);
     fclose(filePtr);
 }
